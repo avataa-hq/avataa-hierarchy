@@ -1,0 +1,123 @@
+syntax = "proto3";
+package hierarchy_data;
+import "google/protobuf/timestamp.proto";
+
+service HierarchyData {
+  rpc GetAllHierarchies (EmptyRequest) returns (stream GetAllHierarchiesResponse) {}
+  rpc GetLevelsByHierarchyId (HierarchyIdRequest) returns (stream GetLevelsByHierarchyIdResponse) {}
+  rpc GetObjsByLevelId (LevelIdRequest) returns (stream GetObjsByLevelIdResponse) {}
+  rpc GetNodeDatasByLevelId (LevelIdRequest) returns (stream GetNodeDatasByLevelIdResponse) {}
+  rpc GetHierarchyPermissionByHierarchyId (HierarchyIdRequest) returns (stream PermissionStreamResponse) {}
+  rpc GetHierarchyById (HierarchyIdRequest) returns (HierarchySchema) {}
+}
+
+message EmptyRequest{
+}
+
+message HierarchySchema {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string author = 4;
+  string change_author = 5;
+  optional google.protobuf.Timestamp created = 6;
+  optional google.protobuf.Timestamp modified = 7;
+  bool create_empty_nodes = 8;
+  string status = 9;
+}
+
+message GetAllHierarchiesResponse{
+  repeated HierarchySchema items = 1;
+}
+
+message HierarchyIdRequest{
+  int64 hierarchy_id = 1;
+}
+
+message LevelSchema {
+  int64 id =1;
+  int64 parent_id = 2;
+  int64 hierarchy_id =3;
+  int64 level = 4;
+  string name = 5;
+  string description = 6;
+  int64 object_type_id = 7;
+  bool is_virtual = 8;
+  int64 param_type_id = 9;
+  optional int64 additional_params_id = 10;
+  optional int64 latitude_id = 11;
+  optional int64 longitude_id = 12;
+  string author = 13;
+  string change_author = 14;
+  optional google.protobuf.Timestamp created = 15;
+  optional google.protobuf.Timestamp modified = 16;
+  bool show_without_children = 17;
+  repeated string key_attrs = 18;
+  optional int64 attr_as_parent = 19;
+}
+
+message GetLevelsByHierarchyIdResponse{
+  repeated LevelSchema items = 1;
+}
+
+message LevelIdRequest{
+  int64 level_id = 1;
+}
+
+message ObjSchema{
+  string id =1;
+  int64 hierarchy_id = 2;
+  string parent_id = 3;
+  string key = 4;
+  optional int64 object_id = 5;
+  optional string additional_params = 6;
+  int64 level = 7;
+  double latitude = 8;
+  double longitude = 9;
+  int64 child_count = 10;
+  int64 object_type_id = 11;
+  int64 level_id = 12;
+  bool active = 13;
+  string path = 14;
+  bool key_is_empty = 15;
+
+  }
+message GetObjsByLevelIdResponse{
+  repeated ObjSchema items = 1;
+}
+
+message NodeDataSchema{
+  int64 id = 1;
+  int64 level_id = 2;
+  string node_id = 3;
+  int64 mo_id = 4;
+  string mo_name = 5;
+  double mo_latitude = 6;
+  double mo_longitude = 7;
+  string mo_status = 8;
+  int64 mo_tmo_id = 9;
+  int64 mo_p_id = 10;
+  bool mo_active = 11;
+  string unfolded_key = 12;
+}
+
+message GetNodeDatasByLevelIdResponse{
+  repeated NodeDataSchema items = 1;
+}
+
+message HierarchyPermissionSchema{
+  int64 id = 1;
+  int64 root_permission_id = 2;
+  string permission = 3;
+  string permission_name = 4;
+  bool create = 5;
+  bool read = 6;
+  bool update = 7;
+  bool delete = 8;
+  bool admin = 9;
+  int64 parent_id = 10;
+}
+
+message PermissionStreamResponse{
+  repeated HierarchyPermissionSchema items = 1;
+}

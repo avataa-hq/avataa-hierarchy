@@ -1,0 +1,21 @@
+syntax = "proto3";
+package mo_finder;
+
+
+service MOFinder {
+    // get MO by filters
+    rpc GetMOsByFilters (RequestGetMOsByFilters) returns (stream ResponseGetMOsByFilters) {}
+}
+
+message RequestGetMOsByFilters {
+    int64 tmo_id = 1;
+    string filters = 2;
+    repeated int64 mo_ids = 3;
+    repeated int64 p_ids = 4;
+    repeated int64 tprm_ids = 5;
+    bool only_ids = 6;
+}
+
+message ResponseGetMOsByFilters {
+    repeated string mos = 1;
+}

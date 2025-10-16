@@ -1,0 +1,84 @@
+syntax = "proto3";
+package severity;
+
+service Severity {
+  rpc GetSeverityByHierarchyId (ListHierarchyId) returns (ListSeverityHierarchyIdResponse) {}
+  rpc GetSeverityByNodeId (ListNodeId) returns (ListSeverityNodeIdResponse) {}
+  rpc GetMoIdsOfHierarchy (ListHierarchyId) returns (ListOfHierarchiesMoIds) {}
+  rpc GetMoIdsOfHierarchyBranch (ListNodeId) returns (ListOfNodesMoIds) {}
+  rpc GetChildNodesOfParentIdWithFilterCondition (RequestNodesWithCondition) returns (ResponseNodesWithCondition) {}
+}
+
+message ListHierarchyId {
+  repeated int32 hierarchy_id = 1;
+}
+
+message SeverityHierarchyIdResponse {
+  int32 hierarchy_id = 1;
+  int32 count = 2;
+  float severity = 3;
+}
+
+message ListSeverityHierarchyIdResponse {
+  repeated SeverityHierarchyIdResponse items = 1;
+}
+
+
+message ListNodeId {
+  repeated string node_id = 1;
+}
+
+message SeverityNodeIdResponse {
+  string node_id = 1;
+  int32 count = 2;
+  float severity = 3;
+}
+
+message ListSeverityNodeIdResponse {
+  repeated SeverityNodeIdResponse items = 1;
+}
+
+message MoIdsByNode {
+    string node_id = 1;
+    repeated int32 mo_ids = 2;
+}
+
+message MoIdsByHierarchy {
+    int32 hierarchy_id = 1;
+    repeated int32 mo_ids = 2;
+}
+
+message ListOfHierarchiesMoIds {
+    repeated MoIdsByHierarchy items = 1;
+}
+
+message ListOfNodesMoIds {
+    repeated MoIdsByNode items = 1;
+}
+
+message RequestNodesWithCondition {
+  int32 hierarchy_id = 1;
+  string request_query = 2;
+  string parent_id = 3;
+  optional int32 tmo_id = 4;
+}
+
+message ResponseNodesWithCondition {
+  repeated ResponseNodesWithConditionItem items = 1;
+}
+
+message ResponseNodesWithConditionItem {
+  string id = 1;
+  optional string parent_id = 2;
+  optional int32 object_id = 3;
+  optional string additional_params = 4;
+  optional float latitude = 5;
+  int32 child_count = 6;
+  string key = 7;
+  int32 hierarchy_id = 8;
+  int32 level_id = 9;
+  int32 object_type_id = 10;
+  int32 level = 11;
+  optional float longitude = 12;
+  repeated int32 children_mo_ids = 13;
+}

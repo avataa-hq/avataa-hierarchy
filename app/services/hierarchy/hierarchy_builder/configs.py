@@ -1,0 +1,1 @@
+DEFAULT_KEY_OF_NULL_NODE = "Null"
